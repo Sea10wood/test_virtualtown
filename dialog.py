@@ -11,12 +11,12 @@ class DialogueSystem:
         """2人のエージェントが指定されたテーマについて3往復の会話を行う"""
         conversation = []
         
-        for _ in range(3):
+        for _ in range(1):
             prompt1 = f"{agent1.name}が{agent2.name}と「{theme}」について語っています。"
             try:
                 response1 = openai.ChatCompletion.create(
                     model="gpt-4",
-                    messages=[{"role": "system", "content": "入力された歴史上の人物同士が議論する対話を生成するAIです。"},
+                    messages=[{"role": "system", "content": "入力された歴史上の人物同士が入力されたテーマに対して議論する対話を生成するAIです。"},
                               {"role": "user", "content": prompt1}],
                     temperature=0.7,
                     request_timeout=30 
