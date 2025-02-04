@@ -47,7 +47,7 @@ openai.ChatCompletion.createメソッドを使用して、OpenAIのGPT-4モデ�
    - ユーザーが2人の歴史上の人物の名前と議論のテーマを入力。
 
 2. **APIリクエストの生成**:
-   - `generate_conversation`メソッド内で、入力された人物の名前とテーマを使用してプロンプトを生成。
+   - `generate_conversation`メソッド内で、入力された人物の名前からプロフィールを生成し、その人物とテーマを用してプロンプトを生成。
 
 3. **LLMへのリクエスト**:
    - `openai.ChatCompletion.create`メソッドを使用して、生成されたプロンプトをOpenAIのGPT-4モデルに送信。
