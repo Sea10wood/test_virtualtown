@@ -21,7 +21,7 @@ class DialogueSystem:
                     temperature=0.7,
                     request_timeout=30 
                 )
-                speech1 = response1.choices[0].message["content"]
+                speech1 = response1['choices'][0]['message']['content']
             except openai.error.Timeout as e:
                 print(f"Timeout occurred: {e}")
                 time.sleep(5)  # 少し待ってから再試行
@@ -36,7 +36,7 @@ class DialogueSystem:
                     temperature=0.7,
                     request_timeout=30 
                 )
-                speech2 = response2.choices[0].message["content"]
+                speech2 = response2['choices'][0]['message']['content']
             except openai.error.Timeout as e:
                 print(f"Timeout occurred: {e}")
                 time.sleep(5)  # 少し待ってから再試行
@@ -46,3 +46,35 @@ class DialogueSystem:
             conversation.append(f"{agent2.name}: {speech2}")
         
         return "\n".join(conversation)
+
+def generate_agent_profile(name):
+    prompt = f"{name}のプロフィールを作成してください。"
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "あなたは歴史上の人物のプロフィールを作成するAIです。"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7,
+        max_tokens=150
+    )
+    profile = response['choices'][0]['message']['content'].strip()
+    return profile
+
+def save_profile(name, profile, filename):
+    with open(filename, 'w', encoding='utf-8') as file:
+        file.write(f"{name}のプロフィール:\n{profile}\n")
+
+def update_profile_with_conversation(name, profile, conversation):
+    prompt = f"{name}の現在のプロフィール: {profile}\n\n会話の内容: {conversation}\n\nこの会話を元に{name}の新しいプロフィールを作成してください。"
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "あなたは歴史上の人物のプロフィールを更新するAIです。"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7,
+        max_tokens=150
+    )
+    updated_profile = response['choices'][0]['message']['content'].strip()
+    return updated_profile
