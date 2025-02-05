@@ -14,8 +14,8 @@ const config: Config = {
         primary: '#2d3748',
         secondary: '#4a5568',
         accent: '#718096',
-        background: '#2d3748',
-        foreground: '#e2e8f0',
+        background: '#2d3748', // カスタムクラス
+        foreground: '#e2e8f0', // カスタムクラス
       },
       lineHeight: {
         relaxed: '1.75',
