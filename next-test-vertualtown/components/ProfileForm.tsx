@@ -4,7 +4,7 @@ interface ProfileFormProps {
   onProfileGenerated: (name1: string, name2: string, conversation: string, preProfile1: string, preProfile2: string, postProfile1: string, postProfile2: string) => void
 }
 
-const ProfileForm = ({ onProfileGenerated }: ProfileFormProps) => {
+export default function ProfileForm({ onProfileGenerated }: ProfileFormProps) {
   const [name1, setName1] = useState('')
   const [name2, setName2] = useState('')
   const [theme, setTheme] = useState('')
@@ -13,8 +13,7 @@ const ProfileForm = ({ onProfileGenerated }: ProfileFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-
-    // 1人目のプロフィールを生成
+    // プロフィール1を生成
     const response1 = await fetch('/api/generateProfile', {
       method: 'POST',
       headers: {
@@ -25,7 +24,7 @@ const ProfileForm = ({ onProfileGenerated }: ProfileFormProps) => {
     const data1 = await response1.json()
     const preProfile1 = data1.profile
 
-    // 2人目のプロフィールを生成
+    // プロフィール2を生成
     const response2 = await fetch('/api/generateProfile', {
       method: 'POST',
       headers: {
@@ -54,51 +53,40 @@ const ProfileForm = ({ onProfileGenerated }: ProfileFormProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto p-4 bg-gray-700 rounded-md">
-      <label htmlFor="name1" className="text-lg font-semibold">
-        1人目の名前を入力してください
-      </label>
-      <input
-        type="text"
-        id="name1"
-        value={name1}
-        onChange={(e) => setName1(e.target.value)}
-        placeholder="名前1"
-        required
-        className="p-2 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <label htmlFor="name2" className="text-lg font-semibold">
-        2人目の名前を入力してください
-      </label>
-      <input
-        type="text"
-        id="name2"
-        value={name2}
-        onChange={(e) => setName2(e.target.value)}
-        placeholder="名前2"
-        required
-        className="p-2 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <label htmlFor="theme" className="text-lg font-semibold">
-        テーマを入力してください
-      </label>
-      <input
-        type="text"
-        id="theme"
-        value={theme}
-        onChange={(e) => setTheme(e.target.value)}
-        placeholder="テーマ"
-        required
-        className="p-2 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button
-        type="submit"
-        className="p-2 text-lg text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
+    <form onSubmit={handleSubmit} className="space-y-4 mx-auto p-4 bg-gray-800 border border-gray-700 rounded" style={{ width: '20%' }}>
+      <div>
+        <label htmlFor="name1" className="block text-white">名前1</label>
+        <input
+          type="text"
+          id="name1"
+          value={name1}
+          onChange={(e) => setName1(e.target.value)}
+          className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded"
+        />
+      </div>
+      <div>
+        <label htmlFor="name2" className="block text-white">名前2</label>
+        <input
+          type="text"
+          id="name2"
+          value={name2}
+          onChange={(e) => setName2(e.target.value)}
+          className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded"
+        />
+      </div>
+      <div>
+        <label htmlFor="theme" className="block text-white">テーマ</label>
+        <input
+          type="text"
+          id="theme"
+          value={theme}
+          onChange={(e) => setTheme(e.target.value)}
+          className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded"
+        />
+      </div>
+      <button type="submit" className="w-full p-2 bg-blue-600 text-white rounded" disabled={loading}>
         {loading ? '生成中...' : '生成'}
       </button>
     </form>
   )
 }
-
-export default ProfileForm

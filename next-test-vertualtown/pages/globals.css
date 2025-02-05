@@ -9,6 +9,9 @@
   .text-foreground {
     @apply text-gray-200;
   }
+  .bg-dark-navy {
+    @apply bg-gray-900;
+  }
 }
 
 body {
@@ -35,4 +38,6 @@ button {
 footer {
   @apply bg-gray-900 text-center p-4 mt-auto;
 }
+
+
 
