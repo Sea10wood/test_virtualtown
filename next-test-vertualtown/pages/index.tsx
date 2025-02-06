@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import ProfileForm from '../components/ProfileForm'
 import ProfileDisplay from '../components/ProfileDisplay'
+import ConversationDisplay from '../components/ConversationDisplay'
 
 export default function Home() {
   const [name1, setName1] = useState('')
@@ -43,6 +44,12 @@ export default function Home() {
     ))
   }
 
+  const formatPostProfile = (profile: string) => {
+    return profile.split('\n').map((line, index) => (
+      <p key={index}>{line}</p>
+    ))
+  }
+
   return (
     <>
       <Head>
@@ -53,7 +60,7 @@ export default function Home() {
       </Head>
       <div className="flex flex-col min-h-screen bg-gray-800 text-gray-200">
         <header className="flex justify-between items-center p-4 bg-gray-900">
-          <h1 className="text-2xl font-bold">プロフィール生成アプリ</h1>
+          <h1 className="text-2xl font-bold ml-2">🗣️　対談</h1>
           <button className="md:hidden text-white" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             ☰
           </button>
@@ -67,7 +74,7 @@ export default function Home() {
               <li className="mb-2 cursor-pointer hover:bg-gray-700 p-2 rounded" onClick={() => setActivePage('postProfile')}>対談後プロフィール</li>
             </ul>
             <div className="mt-auto">
-              <h3 className="text-xl font-bold mb-2">過去の対談</h3>
+              <h3 className="text-xl font-bold mt-14 mb-2">過去の対談</h3>
               <ul className="space-y-2">
                 {pastConversations.map((conv, index) => (
                   <li key={index} className="cursor-pointer hover:bg-gray-700 p-2 rounded" onClick={() => {
@@ -106,25 +113,21 @@ export default function Home() {
               </div>
             )}
             {activePage === 'conversation' && conversation && (
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold mb-4">対談結果</h2>
-                <div className="bg-gray-700 p-4 rounded-lg space-y-4">
-                  {conversation.split('\n').map((line, index) => {
-                    const isName1 = line.startsWith(name1)
-                    return (
-                      <div key={index} className={`p-2 rounded ${isName1 ? 'bg-gray-800 text-left' : 'bg-gray-600 text-right'}`}>
-                        <strong>{isName1 ? name1 : name2}:</strong> {line.replace(`${isName1 ? name1 : name2}:`, '').trim()}
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
+              <ConversationDisplay name1={name1} name2={name2} conversation={conversation} />
             )}
             {activePage === 'postProfile' && conversation && (
-              <div>
+              <div className="space-y-4">
                 <h2 className="text-2xl font-bold mb-4">対談後プロフィール</h2>
-                <p>対談後のプロフィール1: {postProfile1}</p>
-                <p>対談後のプロフィール2: {postProfile2}</p>
+                <div className="bg-gray-700 p-4 rounded-lg space-y-4">
+                  <div className="bg-gray-800 p-4 rounded">
+                    <h3 className="text-xl font-bold mb-2">プロフィール1</h3>
+                    {formatPostProfile(postProfile1)}
+                  </div>
+                  <div className="bg-gray-800 p-4 rounded">
+                    <h3 className="text-xl font-bold mb-2">プロフィール2</h3>
+                    {formatPostProfile(postProfile2)}
+                  </div>
+                </div>
               </div>
             )}
           </main>
